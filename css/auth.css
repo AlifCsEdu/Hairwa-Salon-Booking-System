@@ -1,0 +1,397 @@
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 240 5.9% 10%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 240 4.8% 95.9%;
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 240 5.9% 10%;
+        --radius: 0.75rem;
+    }
+
+    .dark {
+        --background: 240 10% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 240 10% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 240 10% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 240 5.9% 10%;
+        --secondary: 240 3.7% 15.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 240 3.7% 15.9%;
+        --muted-foreground: 240 5% 64.9%;
+        --accent: 240 3.7% 15.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 3.7% 15.9%;
+        --input: 240 3.7% 15.9%;
+        --ring: 240 4.9% 83.9%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideFromLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideFromRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.slide-from-left {
+    animation: slideFromLeft 0.5s ease-out forwards;
+}
+
+.slide-from-right {
+    animation: slideFromRight 0.5s ease-out forwards;
+}
+
+/* Base styles */
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+.shadcn-card {
+    border-radius: var(--radius);
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+}
+
+.shadcn-input {
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--input));
+    background-color: transparent;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: border-color 0.2s ease;
+}
+
+.shadcn-input:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.3);
+}
+
+.shadcn-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+}
+
+.shadcn-button-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+}
+
+.shadcn-button-primary:hover {
+    opacity: 0.9;
+}
+
+.shadcn-button-ghost {
+    background-color: transparent;
+    color: hsl(var(--foreground));
+}
+
+.shadcn-button-ghost:hover {
+    background-color: hsl(var(--accent));
+}
+
+.shadcn-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.shadcn-checkbox {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid hsl(var(--input));
+    transition: all 0.2s ease;
+}
+
+.shadcn-checkbox:checked {
+    background-color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+}
+
+.apple-blur {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: scaleIn 0.5s ease-out forwards;
+}
+
+.dark .apple-blur {
+    background-color: rgba(17, 17, 17, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.dark .modern-bg {
+    background: radial-gradient(circle at top right, #111827, #030712);
+}
+
+/* Tab buttons styling */
+.tabs-container {
+    position: relative;
+    background: hsl(var(--secondary));
+    border-radius: 0.75rem;
+    padding: 0.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+button.tab-button {
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    padding: 0.75rem 1.5rem;
+    width: 50%;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: hsl(var(--muted-foreground));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+button.tab-button.active {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark button.tab-button.active {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+}
+
+button.tab-button:hover:not(.active) {
+    color: hsl(var(--foreground));
+    background: hsl(var(--accent));
+    transform: translateY(-1px);
+}
+
+.tab-indicator {
+    position: absolute;
+    height: calc(100% - 0.5rem);
+    width: calc(50% - 0.5rem);
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+    top: 0.25rem;
+    left: 0.25rem;
+}
+
+.dark .tab-indicator {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+/* Form elements */
+.form-group {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+#loginForm {
+    animation: slideFromLeft 0.5s ease-out forwards;
+}
+
+#registerForm {
+    animation: slideFromRight 0.5s ease-out forwards;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    animation: pulse 0.3s ease-out;
+}
+
+.dark button[type="submit"] {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+/* Form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+    transition: all 0.3s ease;
+}
+
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"] {
+    background-color: hsl(var(--secondary));
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 1px hsl(var(--ring));
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus {
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 1px hsl(var(--ring));
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: hsl(var(--muted-foreground));
+}
+
+.dark input[type="text"]::placeholder,
+.dark input[type="email"]::placeholder,
+.dark input[type="password"]::placeholder {
+    color: hsl(var(--muted-foreground));
+}
+
+/* Modal */
+dialog {
+    animation: scaleIn 0.3s ease-out;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.dark dialog {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+}
+
+/* Password elements */
+.toggle-password {
+    color: hsl(var(--muted-foreground));
+    transition: all 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: hsl(var(--foreground));
+    animation: pulse 0.3s ease-out;
+}
+
+.password-strength-bar {
+    transition: all 0.3s ease;
+}
+
+/* Password strength colors */
+.password-strength-bar.bg-red-500 { background: #ef4444; }
+.password-strength-bar.bg-orange-500 { background: #f97316; }
+.password-strength-bar.bg-yellow-500 { background: #eab308; }
+.password-strength-bar.bg-blue-500 { background: #3b82f6; }
+.password-strength-bar.bg-green-500 { background: #22c55e; }
+
+.dark .password-strength-bar.bg-red-500 { background: #dc2626; }
+.dark .password-strength-bar.bg-orange-500 { background: #ea580c; }
+.dark .password-strength-bar.bg-yellow-500 { background: #ca8a04; }
+.dark .password-strength-bar.bg-blue-500 { background: #2563eb; }
+.dark .password-strength-bar.bg-green-500 { background: #16a34a; }
+
+/* Text colors */
+.text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+}
+
+.dark .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+}
+
+h1, h2, h3, h4, h5, h6, p, label, span {
+    color: hsl(var(--foreground));
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, 
+.dark p, .dark label, .dark span {
+    color: hsl(var(--foreground));
+}

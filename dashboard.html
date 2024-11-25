@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salon Dashboard</title>
+    <link rel="icon" type="image/png" href="img/logo.png" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.7.4/dist/full.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "hairwa-gold": "#e3c264",
+              "hairwa-green": "#00571f",
+              "hairwa-dark": "#000804",
+            },
+          },
+        },
+        daisyui: {
+          themes: [
+            {
+              light: {
+                primary: "#e3c264",
+                "primary-content": "#000000",
+                secondary: "#00571f",
+                "secondary-content": "#ffffff",
+                accent: "#00571f",
+                neutral: "#e3c264",
+                "base-100": "#ffffff",
+                "base-200": "#f8f9fa",
+                "base-300": "#f1f3f5",
+                "base-content": "#1f2937",
+              },
+              dark: {
+                primary: "#e3c264",
+                "primary-content": "#000000",
+                secondary: "#00571f",
+                "secondary-content": "#e3c264",
+                accent: "#00571f",
+                neutral: "#000804",
+                "base-100": "#000804",
+                "base-200": "#001208",
+                "base-300": "#001a0a",
+                "base-content": "#ffffff",
+              },
+            },
+          ],
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body class="min-h-screen">
+    <!-- Main Dashboard -->
+    <div class="flex min-h-screen relative">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="min-h-screen transition-all duration-300 ease-in-out"
+      >
+        <div class="px-6 py-8 sidebar-header">
+          <div class="logo-container">
+            <img src="img/logo.png" alt="HairWa Logo" />
+          </div>
+          <h1 class="text-2xl font-bold brand-text hairwa-brand">
+            <span class="primary">Hair</span><span class="secondary">Wa</span>
+            <span class="base">Salon</span>
+          </h1>
+          <button
+            id="sidebarToggle"
+            class="transition-all duration-300 hover:shadow-lg"
+          >
+            <i class="fas fa-chevron-left text-primary text-sm"></i>
+          </button>
+        </div>
+        <ul class="menu menu-lg p-4">
+          <li>
+            <a
+              href="#"
+              data-section="dashboard"
+              class="hover:bg-opacity-10 transition-colors"
+            >
+              <i class="fas fa-home"></i>
+              <span class="sidebar-text">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              data-section="appointments"
+              class="hover:bg-opacity-10 transition-colors"
+            >
+              <i class="fas fa-calendar-alt"></i>
+              <span class="sidebar-text">Appointments</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              data-section="users"
+              class="hover:bg-opacity-10 transition-colors"
+            >
+              <i class="fas fa-users"></i>
+              <span class="sidebar-text">Users</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              data-section="services"
+              class="hover:bg-opacity-10 transition-colors"
+            >
+              <i class="fas fa-spa"></i>
+              <span class="sidebar-text">Services</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              data-section="revenue"
+              class="hover:bg-opacity-10 transition-colors"
+            >
+              <i class="fas fa-chart-line"></i>
+              <span class="sidebar-text">Revenue</span>
+            </a>
+          </li>
+        </ul>
+        <div class="absolute bottom-0 w-full p-4 border-t border-base-200">
+          <div class="flex items-center mb-2">
+            <button class="btn btn-ghost btn-block gap-2 text-base-content hover:text-[#D4AF37]" onclick="toggleTheme()">
+              <i class="fas fa-sun text-[#D4AF37]" id="lightIcon"></i>
+              <i class="fas fa-moon text-[#D4AF37] hidden" id="darkIcon"></i>
+              <span class="sidebar-text" id="themeText">Toggle Theme</span>
+            </button>
+          </div>
+          <a href="index.html" class="btn btn-outline gap-2 btn-block mb-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:border-[#D4AF37]">
+            <i class="fas fa-arrow-left"></i>
+            <span class="sidebar-text">Back to Home</span>
+          </a>
+          <button id="logoutBtn" class="btn btn-ghost btn-block text-error" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="sidebar-text">Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 min-h-screen bg-base-200/50">
+        <!-- Mobile Menu Button -->
+        <div
+          class="lg:hidden w-full navbar bg-base-100/80 backdrop-blur-sm shadow-sm sticky top-0 z-50"
+        >
+          <div class="flex-none">
+            <button class="btn btn-ghost btn-circle" id="mobileSidebarToggle">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+          <div class="flex-1">
+            <span class="text-xl font-bold text-primary">Salon Dashboard</span>
+          </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="p-8">
+          <!-- Stats Overview -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          >
+            <div class="stat rounded-lg shadow-lg backdrop-blur-sm">
+              <div class="stat-title">Total Appointments</div>
+              <div class="stat-value" id="totalAppointments">0</div>
+              <div class="stat-desc">This Month</div>
+            </div>
+
+            <div class="stat rounded-lg shadow-lg backdrop-blur-sm">
+              <div class="stat-title">Pending</div>
+              <div class="stat-value" id="pendingAppointments">0</div>
+              <div class="stat-desc">Needs Confirmation</div>
+            </div>
+
+            <div class="stat rounded-lg shadow-lg backdrop-blur-sm">
+              <div class="stat-title">Upcoming Today</div>
+              <div class="stat-value" id="upcomingToday">0</div>
+              <div class="stat-desc">Scheduled</div>
+            </div>
+
+            <div class="stat rounded-lg shadow-lg backdrop-blur-sm">
+              <div class="stat-title">Completed Today</div>
+              <div class="stat-value" id="completedToday">0</div>
+              <div class="stat-desc">Finished</div>
+            </div>
+          </div>
+
+          <!-- Dashboard Overview Section -->
+          <section id="dashboard" class="space-y-4">
+            <!-- Dashboard Overview Grid -->
+            <div
+              id="dashboardOverview"
+              class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
+            >
+              <!-- Charts Section -->
+              <div class="lg:col-span-2 space-y-6">
+                <!-- Appointment Distribution Chart -->
+                <div
+                  class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+                >
+                  <h3 class="text-lg font-semibold mb-4">
+                    Today's Appointment Distribution
+                  </h3>
+                  <div class="h-[300px]">
+                    <canvas id="appointmentDistChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Revenue Chart -->
+                <div
+                  class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+                >
+                  <h3 class="text-lg font-semibold mb-4">Weekly Revenue</h3>
+                  <div class="h-[300px]">
+                    <canvas id="overviewRevenueChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Side Panels -->
+              <div class="space-y-6">
+                <!-- Popular Services -->
+                <div
+                  class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+                >
+                  <h3 class="text-lg font-semibold mb-4">Popular Services</h3>
+                  <div id="popularServices" class="grid grid-cols-1 gap-4">
+                    <!-- Popular services will be loaded here -->
+                  </div>
+                </div>
+
+                <!-- Upcoming Appointments Today -->
+                <div
+                  class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+                >
+                  <h3 class="text-lg font-semibold mb-4">Today's Schedule</h3>
+                  <div id="todaySchedule" class="space-y-3">
+                    <!-- Upcoming appointments will be loaded here -->
+                  </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div
+                  class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+                >
+                  <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                  <div id="recentActivity" class="space-y-3">
+                    <!-- Recent activity will be loaded here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Appointments Section -->
+          <section id="appointments" class="space-y-4">
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold section-title">Appointments</h2>
+            </div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+            >
+              <div class="flex items-center gap-4">
+                <button
+                  class="btn btn-accent"
+                  onclick="document.getElementById('addAppointmentModal').showModal()"
+                >
+                  <i class="fas fa-plus mr-2"></i>Add Appointment
+                </button>
+                <select
+                  id="appointmentStatusFilter"
+                  class="select select-bordered select-sm md:select-md"
+                >
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <div class="form-control">
+                  <select
+                    id="appointmentDateFilter"
+                    class="select select-bordered select-sm md:select-md w-40 bg-base-100"
+                  >
+                    <option value="">All Dates</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div
+              class="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+            >
+              <table class="table table-zebra">
+                <thead>
+                  <tr>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('datetime')"
+                    >
+                      Date & Time <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('customer')"
+                    >
+                      Customer <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('email')"
+                    >
+                      Email <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('phone')"
+                    >
+                      Phone <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('service')"
+                    >
+                      Service <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('duration')"
+                    >
+                      Duration <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('group_size')"
+                    >
+                      Group Size <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('total_price')"
+                    >
+                      Total Price <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th
+                      class="cursor-pointer hover:bg-opacity-20"
+                      onclick="sortAppointments('status')"
+                    >
+                      Status <i class="fas fa-sort ml-1"></i>
+                    </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="appointmentsTableBody" class="text-sm">
+                  <!-- Appointments will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Users Section -->
+          <section id="users" class="hidden space-y-4">
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold section-title">Users</h2>
+            </div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+            >
+              <div class="flex items-center gap-4">
+                <button
+                  class="btn btn-accent"
+                  onclick="document.getElementById('addUserModal').showModal()"
+                >
+                  <i class="fas fa-user-plus mr-2"></i>Add User
+                </button>
+              </div>
+              <div class="form-control">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="userSearchInput"
+                    placeholder="Search users..."
+                    class="input input-bordered input-sm md:input-md"
+                  />
+                  <button class="btn btn-square btn-ghost">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+            >
+              <table class="table">
+                <thead class="bg-primary bg-opacity-10 text-base-content">
+                  <tr>
+                    <th>Profile</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Admin</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody" class="text-sm">
+                  <!-- Users will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Services Section -->
+          <section id="services" class="space-y-4">
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold section-title">Services</h2>
+            </div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+            >
+              <button
+                class="btn btn-accent"
+                onclick="document.getElementById('addServiceModal').showModal()"
+              >
+                <i class="fas fa-spa mr-2"></i>Add Service
+              </button>
+            </div>
+            <div
+              class="overflow-x-auto bg-base-100 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+            >
+              <table class="table table-zebra">
+                <thead class="bg-primary bg-opacity-10 text-base-content">
+                  <tr>
+                    <th>Service Name</th>
+                    <th>Duration (mins)</th>
+                    <th>Price (RM)</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="servicesTableBody" class="text-sm">
+                  <!-- Services will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Revenue Section -->
+          <section id="revenue" class="hidden space-y-6">
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold section-title">
+                Revenue Analytics
+              </h2>
+            </div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+            >
+              <div class="flex gap-2">
+                <select
+                  id="revenueTimeframe"
+                  class="select select-bordered select-sm md:select-md"
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly" selected>Monthly</option>
+                  <option value="yearly">Yearly</option>
+                </select>
+                <input
+                  type="month"
+                  id="revenueDatePicker"
+                  class="input input-bordered input-sm md:input-md"
+                />
+              </div>
+            </div>
+
+            <!-- Revenue Overview Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div
+                class="stats shadow bg-base-100 hover:shadow-lg transition-all border border-[#e3c264] border-opacity-20 content-glass"
+              >
+                <div class="stat">
+                  <div class="stat-title text-base-content">Total Revenue</div>
+                  <div class="stat-value text-primary" id="totalRevenue">
+                    RM 0
+                  </div>
+                  <div class="stat-desc text-secondary" id="totalRevenueChange">
+                    vs last period
+                  </div>
+                </div>
+              </div>
+              <div
+                class="stats shadow bg-base-100 hover:shadow-lg transition-all border border-[#e3c264] border-opacity-20 content-glass"
+              >
+                <div class="stat">
+                  <div class="stat-title text-base-content">
+                    Average Per Booking
+                  </div>
+                  <div class="stat-value text-secondary" id="averageRevenue">
+                    RM 0
+                  </div>
+                  <div
+                    class="stat-desc text-secondary"
+                    id="averageRevenueChange"
+                  >
+                    per appointment
+                  </div>
+                </div>
+              </div>
+              <div
+                class="stats shadow bg-base-100 hover:shadow-lg transition-all border border-[#e3c264] border-opacity-20 content-glass"
+              >
+                <div class="stat">
+                  <div class="stat-title text-base-content">
+                    Most Popular Service
+                  </div>
+                  <div class="stat-value text-accent" id="popularService">
+                    -
+                  </div>
+                  <div
+                    class="stat-desc text-secondary"
+                    id="popularServiceRevenue"
+                  >
+                    revenue generated
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue Chart -->
+            <div
+              class="bg-base-100 p-6 rounded-xl shadow-lg border border-[#e3c264] border-opacity-20 content-glass"
+            >
+              <canvas id="revenueChart" class="w-full h-[400px]"></canvas>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div
+              class="bg-base-100 rounded-xl shadow-lg overflow-x-auto border border-[#e3c264] border-opacity-20 content-glass"
+            >
+              <div
+                class="p-4 flex flex-wrap gap-4 items-center justify-between border-b border-base-200"
+              >
+                <h3 class="text-lg font-semibold">Recent Transactions</h3>
+                <div class="flex gap-2">
+                  <div class="form-control">
+                    <input
+                      type="text"
+                      id="transactionSearch"
+                      placeholder="Search transactions..."
+                      class="input input-bordered input-sm md:input-md w-full max-w-xs"
+                    />
+                  </div>
+                  <select
+                    id="transactionStatus"
+                    class="select select-bordered select-sm md:select-md"
+                  >
+                    <option value="">All Status</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+              <table class="table table-zebra">
+                <thead class="bg-primary bg-opacity-10 text-base-content">
+                  <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentTransactions" class="text-sm">
+                  <!-- Transactions will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Add Appointment Modal -->
+    <dialog id="addAppointmentModal" class="modal">
+      <form
+        method="dialog"
+        class="modal-box"
+        onsubmit="event.preventDefault(); createAppointment();"
+      >
+        <h3 class="font-bold text-lg mb-4">Create New Appointment</h3>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Customer Name</span>
+          </label>
+          <input
+            type="text"
+            id="newCustomerName"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            id="newCustomerEmail"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Phone</span>
+          </label>
+          <input
+            type="tel"
+            id="newCustomerPhone"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Service</span>
+          </label>
+          <select
+            id="newService"
+            class="select select-bordered w-full"
+            required
+          >
+            <option value="">Select a service</option>
+          </select>
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Date</span>
+          </label>
+          <input
+            type="date"
+            id="newAppointmentDate"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Time</span>
+          </label>
+          <input
+            type="time"
+            id="newAppointmentTime"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Group Size</span>
+          </label>
+          <input
+            type="number"
+            id="newGroupSize"
+            class="input input-bordered w-full"
+            min="1"
+            value="1"
+            required
+          />
+        </div>
+
+        <div class="modal-action">
+          <button
+            type="button"
+            class="btn"
+            onclick="document.getElementById('addAppointmentModal').close()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Add User Modal -->
+    <dialog id="addUserModal" class="modal">
+      <form
+        method="dialog"
+        class="modal-box w-96"
+        onsubmit="event.preventDefault(); createUser();"
+      >
+        <h3 class="font-bold text-lg mb-4">Add New User</h3>
+
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Profile Picture</span>
+          </label>
+          <input
+            type="file"
+            id="newProfilePicture"
+            accept="image/*"
+            class="file-input file-input-bordered w-full"
+          />
+        </div>
+
+        <div class="form-control w-full mt-2">
+          <label class="label">
+            <span class="label-text">Username</span>
+          </label>
+          <input
+            type="text"
+            id="newUsername"
+            placeholder="Enter username"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full mt-2">
+          <label class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            id="newEmail"
+            placeholder="Enter email"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control w-full mt-2">
+          <label class="label">
+            <span class="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="Enter password"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div class="form-control mt-2">
+          <label class="label cursor-pointer">
+            <span class="label-text">Admin User</span>
+            <input
+              type="checkbox"
+              id="newIsAdmin"
+              class="toggle toggle-primary"
+            />
+          </label>
+        </div>
+
+        <div class="modal-action">
+          <button
+            type="button"
+            class="btn"
+            onclick="document.getElementById('addUserModal').close()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Add Service Modal -->
+    <dialog id="addServiceModal" class="modal">
+      <form id="addServiceForm" method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Add New Service</h3>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Service Name</span>
+          </label>
+          <input
+            type="text"
+            name="serviceName"
+            id="newServiceName"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Duration (minutes)</span>
+          </label>
+          <input
+            type="number"
+            name="serviceDuration"
+            id="newServiceDuration"
+            class="input input-bordered w-full"
+            min="1"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Price (RM)</span>
+          </label>
+          <input
+            type="number"
+            name="servicePrice"
+            id="newServicePrice"
+            class="input input-bordered w-full"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Description</span>
+          </label>
+          <textarea
+            name="serviceDescription"
+            id="newServiceDescription"
+            class="textarea textarea-bordered w-full"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Service Image</span>
+          </label>
+          <input
+            type="file"
+            name="serviceImage"
+            id="newServiceImage"
+            class="file-input file-input-bordered w-full"
+            accept="image/*"
+          />
+          <label class="label">
+            <span class="label-text-alt">Recommended size: 600x400 pixels</span>
+          </label>
+        </div>
+        <div class="modal-action">
+          <button
+            type="button"
+            class="btn"
+            onclick="closeModal('addServiceModal')"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Add Service</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Edit Service Modal -->
+    <dialog id="editServiceModal" class="modal">
+      <form id="editServiceForm" method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Edit Service</h3>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Service Name</span>
+          </label>
+          <input
+            type="text"
+            name="serviceName"
+            class="input input-bordered w-full"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Duration (minutes)</span>
+          </label>
+          <input
+            type="number"
+            name="serviceDuration"
+            class="input input-bordered w-full"
+            min="1"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Price (RM)</span>
+          </label>
+          <input
+            type="number"
+            name="servicePrice"
+            class="input input-bordered w-full"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Description</span>
+          </label>
+          <textarea
+            name="serviceDescription"
+            class="textarea textarea-bordered w-full"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Current Image</span>
+          </label>
+          <img
+            id="currentServiceImage"
+            class="w-full max-w-xs mx-auto rounded-lg shadow-lg mb-4"
+            alt="Current service image"
+            style="display: none"
+          />
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">New Service Image</span>
+          </label>
+          <input
+            type="file"
+            name="serviceImage"
+            class="file-input file-input-bordered w-full"
+            accept="image/*"
+          />
+          <label class="label">
+            <span class="label-text-alt"
+              >Leave empty to keep current image</span
+            >
+          </label>
+        </div>
+        <div class="modal-action">
+          <button
+            type="button"
+            class="btn"
+            onclick="closeModal('editServiceModal')"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Update Service</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Delete Confirmation Modal -->
+    <dialog id="deleteModal" class="modal">
+      <form method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg">Confirm Deletion</h3>
+        <p class="py-4">
+          Are you sure you want to delete this item? This action cannot be
+          undone.
+        </p>
+        <div class="modal-action">
+          <button class="btn">Cancel</button>
+          <button class="btn btn-error" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toastContainer" class="toast toast-top toast-end"></div>
+
+    <!-- Scripts -->
+    <script>
+      function showToast(type, message) {
+        const toastContainer = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `alert ${
+          type === "error" ? "alert-error" : "alert-success"
+        } mb-2`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => toast.remove(), 3000);
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard-stats.js"></script>
+    <script src="js/dashboard-overview.js"></script>
+    <script src="js/dashboard-revenue.js"></script>
+    <script src="js/dashboard-auth.js"></script>
+    <script src="js/dashboard-nav.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/dashboard-appointments.js"></script>
+    <script src="js/dashboard-users.js"></script>
+    <script src="js/dashboard-services.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard-revenue.js"></script>
+    <script>
+      // Initialize modals
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load services for appointment modal
+        const appointmentModal = document.getElementById("addAppointmentModal");
+        if (appointmentModal) {
+          appointmentModal.addEventListener("showModal", () => {
+            console.log("Modal opened, loading services...");
+            loadServicesForDropdown();
+          });
+        }
+      });
+    </script>
+    <script>
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          const sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("compact");
+
+          // Store the state
+          localStorage.setItem(
+            "sidebarCompact",
+            sidebar.classList.contains("compact")
+          );
+        });
+
+      // Restore sidebar state on load
+      window.addEventListener("load", function () {
+        const sidebar = document.getElementById("sidebar");
+        const isCompact = localStorage.getItem("sidebarCompact") === "true";
+        if (isCompact) {
+          sidebar.classList.add("compact");
+        }
+      });
+    </script>
+    <script>
+      // Function to fetch and update appointment stats
+      async function updateAppointmentStats() {
+        try {
+          const response = await fetch("api/appointment-stats.php");
+          const data = await response.json();
+
+          if (data.success) {
+            document.getElementById("totalAppointments").textContent =
+              data.data.total;
+            document.getElementById("pendingAppointments").textContent =
+              data.data.pending;
+            document.getElementById("upcomingToday").textContent =
+              data.data.upcoming;
+            document.getElementById("completedToday").textContent =
+              data.data.completed;
+          }
+        } catch (error) {
+          console.error("Error fetching appointment stats:", error);
+        }
+      }
+
+      // Update stats when page loads
+      document.addEventListener("DOMContentLoaded", updateAppointmentStats);
+
+      // Update stats every minute
+      setInterval(updateAppointmentStats, 60000);
+    </script>
+    <script>
+      // Theme toggle functionality
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        const themeText = document.getElementById('themeText');
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        // Toggle icon visibility
+        if (newTheme === 'dark') {
+          darkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+          themeText.textContent = 'Light Mode';
+        } else {
+          darkIcon.classList.remove('hidden');
+          lightIcon.classList.add('hidden');
+          themeText.textContent = 'Dark Mode';
+        }
+      }
+
+      // Initialize theme when page loads
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme');
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        const themeText = document.getElementById('themeText');
+        
+        const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Set initial icon state
+        if (theme === 'dark') {
+          darkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+          themeText.textContent = 'Light Mode';
+        } else {
+          darkIcon.classList.remove('hidden');
+          lightIcon.classList.add('hidden');
+          themeText.textContent = 'Dark Mode';
+        }
+      });
+    </script>
+  </body>
+</html>

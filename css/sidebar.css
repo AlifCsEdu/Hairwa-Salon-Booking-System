@@ -1,0 +1,143 @@
+/* Sidebar Core Styles */
+#sidebar {
+    width: 260px;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    transition: all 0.3s ease;
+}
+
+#sidebar.collapsed {
+    width: 80px;
+}
+
+/* Toggle Button */
+#sidebarToggle {
+    position: absolute;
+    bottom: 1rem;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    background: var(--primary-color);
+    border: 2px solid var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+    transition: all 0.3s ease;
+}
+
+#sidebarToggle i {
+    transition: transform 0.3s ease;
+    color: var(--primary-content);
+}
+
+#sidebar.collapsed #sidebarToggle i {
+    transform: rotate(180deg);
+}
+
+/* Menu Items */
+#sidebar .menu li a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+#sidebar .menu li a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Collapsed State Styles */
+#sidebar.collapsed .sidebar-text,
+#sidebar.collapsed .logo-text {
+    display: none;
+}
+
+#sidebar.collapsed .menu li a {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+#sidebar.collapsed .menu li a i {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+#sidebar.collapsed .btn-block {
+    min-height: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+}
+
+/* Responsive Behavior */
+@media (min-width: 1024px) {
+    .drawer-side {
+        position: sticky !important;
+        overflow: visible !important;
+    }
+    
+    .drawer-toggle ~ .drawer-side {
+        display: block !important;
+    }
+    
+    .drawer-toggle ~ .drawer-content {
+        margin-left: 260px;
+        transition: margin-left 0.3s ease;
+    }
+    
+    .drawer-toggle ~ .drawer-content.sidebar-collapsed {
+        margin-left: 80px;
+    }
+}
+
+/* Mobile Drawer */
+.drawer-side {
+    transition: width 0.3s ease;
+    position: fixed !important;
+}
+
+.drawer-side.collapsed {
+    width: 80px !important;
+}
+
+.drawer-side.collapsed aside {
+    width: 80px !important;
+}
+
+.drawer-side.collapsed .nav-text,
+.drawer-side.collapsed .logout-text,
+.drawer-side.collapsed h1 {
+    display: none;
+}
+
+/* Mobile styles */
+@media (max-width: 1023px) {
+    #sidebar {
+        position: fixed;
+        left: -260px;
+        z-index: 40;
+    }
+
+    #sidebar.mobile-open {
+        left: 0;
+    }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 1023px) {
+    #sidebar {
+        width: 260px !important;
+    }
+    
+    .drawer-toggle:checked ~ .drawer-content {
+        margin-left: 0 !important;
+    }
+}

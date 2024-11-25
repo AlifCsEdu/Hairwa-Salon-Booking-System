@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hairwa - Login/Register</title>
+    <link rel="icon" type="image/png" href="spatemp/img/logo.png" />
+    <link rel="icon" type="image/png" href="img/logo.png" />
+
+    <!-- Styles -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link rel="stylesheet" href="css/auth.css" />
+
+    <style>
+      /* Text rendering fix */
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* Modern glass effect with enhanced visuals */
+      .apple-blur {
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        background: linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0) 100%
+          ),
+          linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        will-change: transform;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .apple-blur::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 0% 50%,
+            rgba(104, 109, 224, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 50%,
+            rgba(236, 72, 153, 0.08) 0%,
+            transparent 50%
+          ),
+          repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.05) 0px,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px,
+            transparent 10px
+          );
+        opacity: 0.7;
+        z-index: -1;
+      }
+
+      .apple-blur::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.05) 30%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0.05) 70%,
+          transparent 100%
+        );
+        transform: rotate(30deg);
+        animation: shine 10s linear infinite;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateY(-100%) rotate(30deg);
+        }
+        100% {
+          transform: translateY(100%) rotate(30deg);
+        }
+      }
+
+      .dark .apple-blur {
+        background: linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 100%
+          ),
+          linear-gradient(rgba(17, 17, 17, 0.9), rgba(17, 17, 17, 0.7));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      }
+
+      .dark .apple-blur::before {
+        background: radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 0% 50%,
+            rgba(104, 109, 224, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 50%,
+            rgba(236, 72, 153, 0.1) 0%,
+            transparent 50%
+          ),
+          repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.025) 0px,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px,
+            transparent 10px
+          );
+        opacity: 0.5;
+      }
+
+      .dark .apple-blur::after {
+        background: linear-gradient(
+          45deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.02) 30%,
+          rgba(255, 255, 255, 0.04) 50%,
+          rgba(255, 255, 255, 0.02) 70%,
+          transparent 100%
+        );
+        opacity: 0.3;
+      }
+
+      /* Beautiful gradient background */
+      .modern-bg {
+        background: radial-gradient(
+            circle at 0% 0%,
+            rgba(104, 109, 224, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 0%,
+            rgba(156, 39, 176, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(242, 41, 91, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 0% 100%,
+            rgba(245, 183, 61, 0.15) 0%,
+            transparent 50%
+          ),
+          linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dark .modern-bg {
+        background: radial-gradient(
+            circle at 0% 0%,
+            rgba(104, 109, 224, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 0%,
+            rgba(156, 39, 176, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(242, 41, 91, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 0% 100%,
+            rgba(245, 183, 61, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(circle at top right, #111111, #000000);
+      }
+
+      /* Subtle animated background elements */
+      .bg-blur {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(35px);
+        opacity: 0.3;
+        animation: float 8s ease-in-out infinite;
+      }
+
+      .bg-blur-1 {
+        width: 250px;
+        height: 250px;
+        top: -75px;
+        right: -75px;
+        background: linear-gradient(
+          135deg,
+          rgba(79, 70, 229, 0.4) 0%,
+          rgba(147, 51, 234, 0.4) 100%
+        );
+      }
+
+      .bg-blur-2 {
+        width: 200px;
+        height: 200px;
+        bottom: -75px;
+        left: -75px;
+        background: linear-gradient(
+          135deg,
+          rgba(236, 72, 153, 0.4) 0%,
+          rgba(239, 68, 68, 0.4) 100%
+        );
+        animation-delay: -4s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(10px, 10px);
+        }
+      }
+
+      .dark .bg-blur-1 {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.4) 0%,
+          rgba(167, 139, 250, 0.4) 100%
+        );
+      }
+
+      .dark .bg-blur-2 {
+        background: linear-gradient(
+          135deg,
+          rgba(236, 72, 153, 0.4) 0%,
+          rgba(244, 63, 94, 0.4) 100%
+        );
+      }
+
+      /* Toast Styling */
+      .toast-message {
+        width: auto !important;
+        max-width: 90vw !important;
+        word-break: break-word;
+      }
+
+      .toast-icon {
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Ensure toasts are always visible */
+      .toastify {
+        max-width: 90vw !important;
+        width: auto !important;
+      }
+
+      /* Modern checkbox */
+      .modern-checkbox {
+        @apply w-5 h-5 rounded-lg border-2 border-gray-300 dark:border-gray-600 text-primary focus:ring-offset-2 focus:ring-2 focus:ring-primary/30 dark:bg-gray-700 transition-all duration-200 ease-out;
+      }
+      .modern-checkbox:checked {
+        @apply border-primary bg-primary scale-95;
+        animation: checkbox-pop 0.2s ease-out;
+      }
+      @keyframes checkbox-pop {
+        0% {
+          transform: scale(0.95);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(0.95);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen modern-bg text-foreground font-inter antialiased">
+    <!-- Background Blurs -->
+    <div class="bg-blur bg-blur-1"></div>
+    <div class="bg-blur bg-blur-2"></div>
+
+    <main
+      class="container max-w-md mx-auto min-h-screen flex items-center justify-center p-6"
+    >
+      <div
+        class="w-full apple-blur rounded-2xl p-8 animate__animated animate__fadeIn animate__faster animate-scale-in"
+      >
+        <div class="flex flex-col space-y-2 text-center mb-8 animate-fade-in">
+          <div class="relative w-full">
+            <img
+              src="img/logo.png"
+              alt="Logo"
+              class="mx-auto w-16 h-16 object-contain animate-pulse mb-2"
+            />
+            <button
+              id="themeToggle"
+              class="absolute right-0 top-0 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+            >
+              <i class="fas fa-moon text-lg opacity-70 hover:opacity-100"></i>
+            </button>
+          </div>
+          <h1 class="text-2xl font-semibold tracking-tight">Welcome back</h1>
+          <p class="text-sm text-muted-foreground">
+            Enter your credentials to continue
+          </p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <button class="tab-button active" data-tab="login">
+            <i class="fas fa-sign-in-alt mr-2"></i>Login
+          </button>
+          <button class="tab-button" data-tab="register">
+            <i class="fas fa-user-plus mr-2"></i>Register
+          </button>
+          <div class="tab-indicator"></div>
+        </div>
+
+        <!-- Login Form -->
+        <form
+          id="loginForm"
+          action="handlers/login.php"
+          method="POST"
+          class="space-y-4 animate-fade-in"
+        >
+          <div class="space-y-2">
+            <label class="text-sm font-medium leading-none" for="login-email"
+              >Email</label
+            >
+            <div class="relative">
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                required
+                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium leading-none" for="login-password"
+              >Password</label
+            >
+            <div class="relative">
+              <input
+                type="password"
+                id="login-password"
+                name="password"
+                required
+                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring pr-10"
+              />
+              <button
+                type="button"
+                class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3"
+              >
+                <i class="fas fa-eye text-muted-foreground"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label class="flex items-center space-x-2 cursor-pointer group">
+              <input type="checkbox" class="modern-checkbox" name="remember" />
+              <span
+                class="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-200"
+                >Remember me</span
+              >
+            </label>
+            <button
+              type="button"
+              class="text-sm text-blue-600 dark:text-blue-400 hover:underline forgot-password"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full h-10 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 inline-flex items-center justify-center"
+          >
+            Sign in
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form
+          id="registerForm"
+          action="handlers/register.php"
+          method="POST"
+          class="space-y-4 hidden animate-fade-in"
+        >
+          <div class="space-y-2">
+            <label
+              class="text-sm font-medium leading-none"
+              for="register-username"
+              >Username</label
+            >
+            <input
+              type="text"
+              id="register-username"
+              name="username"
+              required
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium leading-none" for="register-email"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              required
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-sm font-medium leading-none"
+              for="register-password"
+              >Password</label
+            >
+            <div class="relative">
+              <input
+                type="password"
+                id="register-password"
+                name="password"
+                required
+                class="password-input flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring pr-10"
+              />
+              <button
+                type="button"
+                class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3"
+              >
+                <i class="fas fa-eye text-muted-foreground"></i>
+              </button>
+            </div>
+            <div class="mt-2">
+              <div
+                class="h-1 w-full bg-background-muted rounded-full overflow-hidden"
+              >
+                <div
+                  class="password-strength-bar h-full transition-all duration-300 w-0"
+                ></div>
+              </div>
+              <p class="password-strength text-sm text-muted-foreground mt-1">
+                Password strength
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="terms"
+              name="terms"
+              required
+              class="rounded border-input bg-background"
+            />
+            <label for="terms" class="text-sm text-muted-foreground">
+              I agree to the
+              <a href="#" class="text-primary hover:underline"
+                >Terms of Service</a
+              >
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full h-10 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 inline-flex items-center justify-center"
+          >
+            Create account
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Forgot Password Modal -->
+    <dialog
+      id="forgot_password_modal"
+      class="modal bg-background rounded-lg shadow-lg p-6 w-full max-w-md mx-auto backdrop:bg-black/50"
+    >
+      <div class="animate-scale-in">
+        <h3 class="text-lg font-semibold">Reset Password</h3>
+        <p class="text-sm text-muted-foreground">
+          Enter your email address and we'll send you a link to reset your
+          password.
+        </p>
+
+        <form
+          method="POST"
+          action="handlers/forgot_password.php"
+          class="space-y-4"
+        >
+          <div class="space-y-2">
+            <label class="text-sm font-medium leading-none" for="reset-email"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="reset-email"
+              name="email"
+              required
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+
+          <div class="flex justify-end space-x-2">
+            <button
+              type="button"
+              onclick="this.closest('dialog').close()"
+              class="px-4 py-2 border rounded-md hover:bg-accent"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            >
+              Send Reset Link
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- Scripts -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+    <script src="js/auth.js" defer></script>
+  </body>
+</html>

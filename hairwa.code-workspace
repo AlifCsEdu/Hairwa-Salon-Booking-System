@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.php": "php",
+			"*.html": "html"
+		},
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact"
+		},
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"php.validate.executablePath": "c:/xampp/php/php.exe",
+		"files.exclude": {
+			"**/.git": true,
+			"**/.DS_Store": true,
+			"**/node_modules": true,
+			"**/debug.log": true,
+			"**/php_errors.log": true
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"esbenp.prettier-vscode",
+			"bmewburn.vscode-intelephense-client",
+			"ritwickdey.LiveServer",
+			"xdebug.php-debug"
+		]
+	}
+}
